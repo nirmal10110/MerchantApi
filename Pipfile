@@ -24,7 +24,6 @@ python-dotenv = "*"
 Flask-Cors = "*"
 PyMySQL = "*"
 gunicorn = "*"
-uwsgi = "*"
 
 
 [requires]
