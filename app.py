@@ -31,9 +31,9 @@ app.secret_key = "visa"
 api = Api(app)
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 
 jwt = JWTManager(app)
@@ -54,6 +54,6 @@ api.add_resource(History, "/transaction/history")
 
 
 if __name__ == "__main__":
-    db.init_app(app)
+    # db.init_app(app)
     ma.init_app(app)
     app.run(port=5002, debug=True)

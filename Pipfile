@@ -23,6 +23,8 @@ urllib3 = "==1.25.9"
 python-dotenv = "*"
 Flask-Cors = "*"
 PyMySQL = "*"
+gunicorn = "*"
+
 
 [requires]
 python_version = "3.7"
