@@ -180,6 +180,7 @@ class ReceivePayment(Resource):
             payloadAuthApi["amount"] = payload["amount"]
             payloadAuthApi["systemsTraceAuditNumber"] = systemsTraceAuditNumber
             r = VisaNet.AmountConfirmation(payloadAuthApi)
+            print(r)
             print(r.json())
             if r.status_code != 200:
                 history = HistoryModel(amount=payload["amount"],
@@ -221,6 +222,14 @@ class ReceivePayment(Resource):
             return {"msg": INTERNAL_SERVER_ERROR}, 500
 
         if response.status_code == 200:
+            if flag:
+                payloadAuthApi = {
+                    'mobile_number': mobile_number,
+                    'pan': payload["senderPrimaryAccountNumber"],
+                    'systemsTraceAuditNumber': systemsTraceAuditNumber,
+                    'code': response.status_code
+                }
+                r = VisaNet.TransactionConfirmation(payloadAuthApi)
             status_code = True
         history = HistoryModel(amount=payload["amount"],
                                transaction_id=systemsTraceAuditNumber,
