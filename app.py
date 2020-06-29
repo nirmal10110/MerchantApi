@@ -47,7 +47,7 @@ def check_if_token_in_blacklist(decrypted_token):
 api.add_resource(MerchantRegister, "/register")
 api.add_resource(MerchantLogin, "/login")
 api.add_resource(MerchantLogout, "/logout")
-api.add_resource(Merchant, "/merchant/<string:mobile_number>")
+api.add_resource(Merchant, "/merchant")
 api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(ReceivePayment, "/payment")
 api.add_resource(History, "/transaction/history")

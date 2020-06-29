@@ -25,6 +25,7 @@ Flask-Cors = "*"
 PyMySQL = "*"
 gunicorn = "*"
 uwsgi = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"
