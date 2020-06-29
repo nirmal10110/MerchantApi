@@ -13,7 +13,7 @@ class VisaNet:
         url = "https://virtual-card-auth.herokuapp.com/visa_net/payment"
         # url = "http://127.0.0.1:5001/visa_net/payment"
         try:
-            r = requests.post(url, json=payload, headers=headers, timeout=timeout)
+            r = requests.put(url, json=payload, headers=headers, timeout=timeout)
             return r
         except Exception as e:
             print(e)
