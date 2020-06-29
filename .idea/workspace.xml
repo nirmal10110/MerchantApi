@@ -13,6 +13,7 @@
     <list default="true" id="38466a3f-469f-449b-9361-4168ddddd8f3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resource/merchant.py" beforeDir="false" afterPath="$PROJECT_DIR$/resource/merchant.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +94,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="448" y="165" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1593366088008" />
+    <state x="444" y="130" key="FileChooserDialogImpl" timestamp="1593369911910">
+      <screen x="0" y="0" width="1366" height="745" />
+    </state>
+    <state x="444" y="130" key="FileChooserDialogImpl/0.0.1366.745@0.0.1366.745" timestamp="1593369911910" />
     <state x="184" y="8" key="SettingsEditor" timestamp="1593365492029">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
