@@ -8,7 +8,7 @@ class MerchantModel(db.Model):
     email = db.Column(db.String(40), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     mobile_number = db.Column(db.String(20), unique=True, nullable=False)
-    activated = db.Column(db.Boolean, default=False)
+    activated = db.Column(db.Boolean, default=True)
     state = db.Column(db.String(40), nullable=False)
     country = db.Column(db.String(40), nullable=False)
     zipCode = db.Column(db.String, nullable=False)

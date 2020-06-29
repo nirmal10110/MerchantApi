@@ -81,6 +81,7 @@ class MerchantLogin(Resource):
             return {"msg": INVALID_PASSWORD}, 401
         # elif not merchant.activated:
         #     return {"msg": MERCHANT_NOT_CONFIRMED.format(merchant.mobile_number)}, 400
+        
         access_token = create_access_token(identity=merchant.id, fresh=True)
         refresh_token = create_refresh_token(identity=merchant.id)
         return {"access_token": access_token, "refresh_token": refresh_token,
