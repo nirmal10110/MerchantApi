@@ -10,8 +10,8 @@ class MerchantModel(db.Model):
     activated = db.Column(db.Boolean, default=False)
     state = db.Column(db.String(40), nullable=False)
     country = db.Column(db.String(40), nullable=False)
-    zipCode = db.Column(db.Integer,nullable=False)
-    acquirerCountryCode = db.Column(db.Integer, nullable=False)
+    zipCode = db.Column(db.String,nullable=False)
+    acquirerCountryCode = db.Column(db.String, nullable=False)
 
 
     acquiringBin = db.Column(db.Integer,default=408999) #Fixed
