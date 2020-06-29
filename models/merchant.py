@@ -1,5 +1,6 @@
 from db import db
 
+
 class MerchantModel(db.Model):
     __tablename__ = "merchants"
     id = db.Column(db.Integer, primary_key=True)
@@ -10,12 +11,11 @@ class MerchantModel(db.Model):
     activated = db.Column(db.Boolean, default=False)
     state = db.Column(db.String(40), nullable=False)
     country = db.Column(db.String(40), nullable=False)
-    zipCode = db.Column(db.String,nullable=False)
+    zipCode = db.Column(db.String, nullable=False)
     acquirerCountryCode = db.Column(db.String, nullable=False)
 
-
-    acquiringBin = db.Column(db.Integer,default=408999) #Fixed
-    businessApplicationId = db.Column(db.String(2),default="PP") # Fixed
+    acquiringBin = db.Column(db.Integer, default=408999)  # Fixed
+    businessApplicationId = db.Column(db.String(2), default="PP")  # Fixed
     terminalId = db.Column(db.String(8), unique=True)
     idCode = db.Column(db.String(15), unique=True)
 
@@ -34,5 +34,3 @@ class MerchantModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-    
-    

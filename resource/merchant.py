@@ -160,6 +160,7 @@ class ReceivePayment(Resource):
         payload["localTransactionDateTime"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
         payload["retrievalReferenceNumber"] = RetrievalNo.No() + str(systemsTraceAuditNumber)
 
+        payload["senderPrimaryAccountNumber"] = "4071021226767464"
         # print(payload)
 
         mobile_number = ""
@@ -192,7 +193,10 @@ class ReceivePayment(Resource):
                                        )
                 history.save_to_db()
                 return {'msg': PAYMENT_CANNOT_BE_COMPLETED}, 400
-
+            
+        if "wallet_name" in payload:
+            del(payload["wallet_name"])
+            
         response = FundsTransfer.merchant_pull_payments_post_response(payload)
 
         if response.status_code != 200:
