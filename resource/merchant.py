@@ -160,7 +160,7 @@ class ReceivePayment(Resource):
         payload["localTransactionDateTime"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
         payload["retrievalReferenceNumber"] = RetrievalNo.No() + str(systemsTraceAuditNumber)
 
-        payload["senderPrimaryAccountNumber"] = "4071021226767464"
+        payload["senderPrimaryAccountNumber"] = "4895142232120006"
         # print(payload)
 
         mobile_number = ""
