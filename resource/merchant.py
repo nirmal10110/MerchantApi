@@ -23,6 +23,7 @@ from blacklist import BLACKLIST
 from uniqueIds import SystemsTraceAuditNumber, TerminalId, IdCode
 from authApi.visaNet import VisaNet
 from libs.retrievalNo import RetrievalNo
+from libs.countryCode import countryCdoe
 
 merchant_schema = MerchantSchema()
 
@@ -48,7 +49,7 @@ class MerchantRegister(Resource):
             return {"msg": MERCHANT_ALREADY_EXISTS.format(merchant.email)}, 400
         if MerchantModel.find_merchant_by_mobile_number(merchant.mobile_number):
             return {"msg": MERCHANT_ALREADY_EXISTS.format(merchant.mobile_number)}, 400
-
+        merchant.acquirerCountryCode = countryCdoe[merchant.country]
         terminalId = str(uuid.uuid4().int >> 32)[0:8]
         while terminalId in TerminalId:
             terminalId = str(uuid.uuid4().int >> 32)[0:8]
@@ -81,7 +82,7 @@ class MerchantLogin(Resource):
         #     return {"msg": MERCHANT_NOT_CONFIRMED.format(merchant.mobile_number)}, 400
         access_token = create_access_token(identity=merchant.id, fresh=True)
         refresh_token = create_refresh_token(identity=merchant.id)
-        return {"access_token": access_token, "refresh_token": refresh_token}, 200
+        return {"access_token": access_token, "refresh_token": refresh_token,"merchant":merchant_schema.dump(merchant)}, 200
 
 
 class Merchant(Resource):
