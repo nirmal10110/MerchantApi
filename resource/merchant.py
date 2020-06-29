@@ -41,6 +41,7 @@ OTP_FAILED = "Couldn't send OTP"
 INTERNAL_SERVER_ERROR = "Internal Server Error! Try Again"
 PAYMENT_CANNOT_BE_COMPLETED = "Payment Can not Be Completed Due To Insufficient Balance"
 
+
 class MerchantRegister(Resource):
     @classmethod
     def post(cls):
@@ -82,7 +83,8 @@ class MerchantLogin(Resource):
         #     return {"msg": MERCHANT_NOT_CONFIRMED.format(merchant.mobile_number)}, 400
         access_token = create_access_token(identity=merchant.id, fresh=True)
         refresh_token = create_refresh_token(identity=merchant.id)
-        return {"access_token": access_token, "refresh_token": refresh_token,"merchant":merchant_schema.dump(merchant)}, 200
+        return {"access_token": access_token, "refresh_token": refresh_token,
+                "merchant": merchant_schema.dump(merchant)}, 200
 
 
 class Merchant(Resource):
@@ -123,13 +125,14 @@ class TokenRefresh(Resource):
         new_access_token = create_access_token(identity=merchant_id, fresh=True)  # creating new fresh token
         return {"access_token": new_access_token}, 200
 
+
 class ReceivePayment(Resource):
     @classmethod
     @jwt_required
     def post(cls):
         _id = get_jwt_identity()
         payload = request.get_json()
-            
+
         merchant = MerchantModel.find_merchant_by_id(_id)
         if merchant is None:
             return {"msg": INTERNAL_SERVER_ERROR}, 500
@@ -138,7 +141,7 @@ class ReceivePayment(Resource):
         payload["acquiringBin"] = merchant.acquiringBin
         payload["businessApplicationId"] = merchant.businessApplicationId
         payload["cardAcceptor"] = {
-            "address":{
+            "address": {
                 "country": merchant.country,
                 "state": merchant.state,
                 "zipCode": merchant.zipCode
@@ -152,13 +155,13 @@ class ReceivePayment(Resource):
         while systemsTraceAuditNumber in SystemsTraceAuditNumber:
             systemsTraceAuditNumber = str(uuid.uuid4().int >> 32)[0:6]
         SystemsTraceAuditNumber.add(systemsTraceAuditNumber)
-        
+
         payload["systemsTraceAuditNumber"] = systemsTraceAuditNumber
         payload["localTransactionDateTime"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-        payload["retrievalReferenceNumber"] = RetrievalNo.No()+ str(systemsTraceAuditNumber)
-        
+        payload["retrievalReferenceNumber"] = RetrievalNo.No() + str(systemsTraceAuditNumber)
+
         # print(payload)
-        
+
         mobile_number = ""
         wallet_name = ""
         flag = False
@@ -180,7 +183,7 @@ class ReceivePayment(Resource):
             if r.status_code != 200:
                 history = HistoryModel(amount=payload["amount"],
                                        transaction_id=systemsTraceAuditNumber,
-                                       transaction_time=payload["localTransactionDateTime"], 
+                                       transaction_time=payload["localTransactionDateTime"],
                                        merchant_mobile_number=merchant.mobile_number,
                                        customer_mobile_number=mobile_number,
                                        customer_wallet_name=wallet_name,
@@ -189,18 +192,18 @@ class ReceivePayment(Resource):
                                        )
                 history.save_to_db()
                 return {'msg': PAYMENT_CANNOT_BE_COMPLETED}, 400
-        
+
         response = FundsTransfer.merchant_pull_payments_post_response(payload)
-        
+
         if response.status_code != 200:
             if flag:
-                payloadAuthApi = {    
-                                    'mobile_number' : mobile_number, 
-                                    'pan': payload["senderPrimaryAccountNumber"],
-                                    'systemsTraceAuditNumber': systemsTraceAuditNumber,
-                                    'code': response.status_code
-                                }
-                r= VisaNet.TransactionConfirmation(payloadAuthApi)
+                payloadAuthApi = {
+                    'mobile_number': mobile_number,
+                    'pan': payload["senderPrimaryAccountNumber"],
+                    'systemsTraceAuditNumber': systemsTraceAuditNumber,
+                    'code': response.status_code
+                }
+                r = VisaNet.TransactionConfirmation(payloadAuthApi)
             history = HistoryModel(amount=payload["amount"],
                                    transaction_id=systemsTraceAuditNumber,
                                    transaction_time=payload["localTransactionDateTime"],
@@ -211,13 +214,13 @@ class ReceivePayment(Resource):
                                    status=status_code
                                    )
             history.save_to_db()
-            return {"msg": INTERNAL_SERVER_ERROR},500
-        
-        if response.status_code==200:
-            status_code=True    
-        history= HistoryModel(amount=payload["amount"],
+            return {"msg": INTERNAL_SERVER_ERROR}, 500
+
+        if response.status_code == 200:
+            status_code = True
+        history = HistoryModel(amount=payload["amount"],
                                transaction_id=systemsTraceAuditNumber,
-                               transaction_time=payload["localTransactionDateTime"], 
+                               transaction_time=payload["localTransactionDateTime"],
                                merchant_mobile_number=merchant.mobile_number,
                                customer_mobile_number=mobile_number,
                                customer_wallet_name=wallet_name,
@@ -227,11 +230,6 @@ class ReceivePayment(Resource):
         history.save_to_db()
         # response = FundsTransfer.merchant_push_payments_post_response()
         return response
-
-
-
-
-
 
 # class MerchantConfirm(Resource):
 #     @classmethod
