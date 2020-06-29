@@ -87,11 +87,11 @@ class MerchantLogin(Resource):
 class Merchant(Resource):
     @classmethod
     @jwt_required
-    def get(cls, mobile_number):  # get using phone number (can be changed per use case)
-        print(mobile_number)
-        merchant = MerchantModel.find_merchant_by_mobile_number(mobile_number=mobile_number)
+    def get(cls):  # get using phone number (can be changed per use case)
+        _id = get_jwt_identity()
+        merchant = MerchantModel.find_merchant_by_id(_id)
         if not merchant:
-            return {"msg": MERCHANT_NOT_FOUND.format(mobile_number)}, 404
+            return {"msg": MERCHANT_NOT_FOUND}, 404
         return merchant_schema.dump(merchant), 200
 
     # # just for testing
