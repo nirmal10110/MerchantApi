@@ -1,7 +1,7 @@
 import traceback
 import uuid
 import time
-from datetime import datetime
+from datetime import datetime,timedelta
 from pprint import pprint
 
 from flask import request
@@ -81,8 +81,8 @@ class MerchantLogin(Resource):
             return {"msg": INVALID_PASSWORD}, 401
         # elif not merchant.activated:
         #     return {"msg": MERCHANT_NOT_CONFIRMED.format(merchant.mobile_number)}, 400
-        
-        access_token = create_access_token(identity=merchant.id, fresh=True)
+        expires = timedelta(days = 1)
+        access_token = create_access_token(identity=merchant.id,expires_delta=expires,fresh=True)
         refresh_token = create_refresh_token(identity=merchant.id)
         return {"access_token": access_token, "refresh_token": refresh_token,
                 "merchant": merchant_schema.dump(merchant)}, 200
